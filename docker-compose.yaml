@@ -1,0 +1,22 @@
+services:
+  anvil:
+    image: ghcr.io/foundry-rs/foundry:latest
+    entrypoint:
+      - anvil
+      - --host=0.0.0.0
+      - --port=8545
+      - --block-time=12
+      - --accounts=10
+    ports:
+      - "8545:8545"
+
+  envoy:
+    image: envoyproxy/envoy:v1.31-latest
+    volumes:
+      - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml:ro
+      - ./filter/target/wasm32-wasip1/release/eth_rpc_filter.wasm:/etc/envoy/filter.wasm:ro
+    ports:
+      - "10000:10000"   # proxied JSON-RPC
+      - "9901:9901"     # Envoy admin (stats, config dump)
+    depends_on:
+      - anvil

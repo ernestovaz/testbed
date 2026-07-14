@@ -1,0 +1,19 @@
+[package]
+name = "eth-rpc-filter"
+version = "0.1.0"
+edition = "2021"
+description = "Blockchain-aware JSON-RPC filter for Envoy (Proxy-WASM)"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+proxy-wasm = "0.2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+log = "0.4"
+
+[profile.release]
+opt-level = "s"       # optimize for size
+lto = true
+strip = true
