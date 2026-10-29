@@ -12,6 +12,14 @@ build:
 build-dev:
     cd filter && cargo build --target wasm32-wasip1
 
+# Run host-side parser and policy tests
+unit:
+    cd filter && cargo test
+
+# Validate the filter and Compose configuration without starting services
+check: unit build
+    docker compose config --quiet
+
 # Start the testbed (Anvil + Envoy with filter)
 up: build
     docker compose up -d

@@ -38,21 +38,13 @@ static_resources:
                   value: |
                     {
                       "log_only": false,
-                      "blocked_methods": [
-                        "personal_unlockAccount",
-                        "personal_sendTransaction",
-                        "personal_sign",
-                        "personal_listAccounts",
-                        "personal_newAccount",
-                        "admin_addPeer",
-                        "admin_removePeer",
-                        "admin_startRPC",
-                        "admin_stopRPC",
-                        "miner_start",
-                        "miner_stop",
-                        "debug_setHead"
-                      ],
-                      "allowed_methods": []
+                      "rules": [
+                        {"match": {"namespace": "debug"}, "action": "block"},
+                        {"match": {"namespace": "personal"}, "action": "block"},
+                        {"match": {"namespace": "admin"}, "action": "block"},
+                        {"match": {"namespace": "miner"}, "action": "block"},
+                        {"match": {"operation": "*"}, "action": "allow"}
+                      ]
                     }
                 vm_config:
                   runtime: envoy.wasm.runtime.v8
